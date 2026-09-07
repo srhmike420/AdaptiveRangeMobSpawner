@@ -1,49 +1,41 @@
-# Adaptive Range Mob Spawner Configuration
+# Adaptive Range Mob Spawner - Paper 26.2 build
 
-# Minecraft default range for spawners activating and remaining active is 16 blocks.
-# 128 is the practical max value due to the mob spawning limit of Minecraft's natural entity activation range.
+# Range applied at plugin startup before TPS-based switching occurs.
+initial-spawner-range: 80
 
-# Initial spawner activation range.
-initial-spawner-range: 128
+# Range used when TPS is healthy.
+spawner-range-high: 80
 
-# Spawner activity range when TPS is high.
-spawner-range-high: 128
-
-# Spawner activity range when TPS drops below the threshold.
+# Range used when TPS falls to/below tps-threshold-low.
 spawner-range-low: 16
 
-# TPS threshold to reduce spawner activity range to low.
-tps-threshold-low: 15.0
+# Hysteresis avoids repeatedly flipping ranges around one TPS value.
+tps-threshold-low: 18.5
+tps-threshold-high: 19.5
 
-# TPS threshold to restore spawner activity range to high.
-tps-threshold-high: 18.0
-
-# Interval in ticks for checking TPS and updating spawners in loaded chunks.
-# 20 ticks = 1 second, so 200 ticks = 10 seconds.
+# 20 ticks = 1 second. 200 ticks = 10 seconds.
 update-interval-ticks: 200
 
-# If false, naturally generated spawners will be reverted to the vanilla activation range (16).
+# If true, naturally generated spawners also use the adaptive range.
 affect-naturally-generated: false
 
-# If true, any preexisting spawners that lack the player-placed marker will be assumed to be player placed,
-# and will be updated accordingly. (WARNING: This will affect preexisting naturally generated spawners!)
+# If true, existing unmarked spawners are treated as player-placed.
+# WARNING: this can include naturally generated spawners that already existed.
 update-preexisting-spawners: false
 
-# Number of chunks to process per tick during startup to reduce lag.
+# Startup scan pacing.
 chunks-per-tick: 5
 
-# Enable or disable debug mode for detailed logging.
+# Detailed logging.
 debug-mode: false
 
-# If true, only update spawners in chunks near players.
+# Only scan loaded chunks around online players when the range changes.
 only-update-near-players: true
 
-# Radius (in chunks) around each player to update spawners.
+# Circular radius in chunks around each player.
 player-chunk-radius: 5
 
-# List of world names where spawner adjustments are disabled.
-disabled-worlds:
-  # - world_nether # Uncomment to disable spawner updates.
-  # - world_the_end # Uncomment to disable spawner updates.
-  # - world # Overworld # Uncomment to disable spawner updates.
-
+# Worlds where this plugin does nothing.
+disabled-worlds: []
+#  - world_nether
+#  - world_the_end
